@@ -1,0 +1,53 @@
+install:
+  version: 1.0.0
+
+config:
+
+  ui: 'true'    # Enable the web UI: 'true' or 'false'. This needs to be a string, not a bool.
+
+  auditing:
+    enabled: True
+    type: socket
+    options:
+
+      # file auditing options
+      #audit_directory: /var/log/vault       # This directory will be created, and the audit file will be called audit.log.
+                                            # Trailing slash intentionally left off for better readability in the state.
+
+      # syslog options
+      #facility: AUTH
+      #tag: vault
+      
+      # socket options
+      address: 10.10.10.10:9090
+      socket_type: tcp
+
+  seal:
+    type: awskms
+    options:
+
+      # awskms options
+      #region: us-east-1
+      #access_key: ''           # Comment out if using an IAM role
+      #secret_key: ''           # Comment out if using an IAM role
+      #kms_key_id: 19ec80b0-dfdd-4d97-8164-c6examplekey
+      #endpoint: https://vpce-0e1bb1852241f8cc6-pzi0do8n.kms.us-east-1.vpce.amazonaws.com
+
+  storage:
+    type: dynamodb
+    options:
+      
+      # dynamodb options
+      #ha_enabled: true
+      #region: us-east-1
+      #table: vault
+
+      # consul options
+      #address: 127.0.0.1:8500
+      #path: vault
+
+initialize:
+  auto_unseal:
+    enabled: True             # If this is enabled, the recovery_shares and recovery_threshold will be overidden with 1's.
+  recovery_shares: 5
+  recovery_threshold: 5
