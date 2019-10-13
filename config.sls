@@ -23,17 +23,17 @@ include:
 
 # Create an array of the options that were configured in config.yaml for the chosen audit type.
 {%   set options = [] %}
-{%   for k,v in vault.config.auditing.options.items() %}
+{%   for k,v in vault.config.auditing.options[type].items() %}
 {%     set line = [k,v]|join('=') %}
 {%     do options.append(line) %}
 {%   endfor %}
 
 {%   if type == "file" %}
 
-# If file auditing was selected, manage the audit directory with proper ownership and permissions.
+# If file auditing was selected, first manage the audit directory with proper ownership and permissions.
 "Manage Vault Audit Directory":
   file.directory:
-    - name: {{ vault.config.auditing.options.audit_directory }}
+    - name: {{ vault.config.auditing.options[type].audit_directory }}
     - user: vault
     - group: vault
     - dir_mode: 755

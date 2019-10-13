@@ -1,4 +1,4 @@
-{% for file in salt.cp.list_master(prefix=slspath~'policies/').splitlines() %}
+{% for file in salt.cp.list_master(prefix=slspath~'policies/') %}
 {%   if '.sls' not in file %}
 {%     set file_name = file %}
 {%     set policy_name = file.split('.')[0] %}
@@ -20,5 +20,5 @@
     - onchanges:
       - file: "Manage Vault Policy File - {{ policy_name }}"
 
-{%   endif %%}
+{%   endif %}
 {% endfor %}

@@ -7,7 +7,7 @@ include:
 "Extract Vault Archive":
   archive.extracted:
     - name: /root/vault_{{ version }}/
-    - source: salt://{{ slspath }}/installers/vault-{{ version }}-bin.tar.gz
+    - source: salt://{{ slspath }}/installers/vault-{{ version }}_linux_amd64.zip
     - makedirs: True
     - keep_source: False
     - if_missing: /root/vault_{{ version }}/vault

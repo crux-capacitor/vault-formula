@@ -1,5 +1,5 @@
 install:
-  version: 1.0.0
+  version: 1.2.3
 
 config:
 
@@ -7,20 +7,25 @@ config:
 
   auditing:
     enabled: True
-    type: socket
+
+    # Accepted types: file, syslog, or socket. The set of options matching the type will be used.
+    type: file                              
     options:
 
       # file auditing options
-      #audit_directory: /var/log/vault       # This directory will be created, and the audit file will be called audit.log.
-                                            # Trailing slash intentionally left off for better readability in the state.
+      file:
+        audit_directory: /var/log/vault         # This directory will be created, and the audit file will be called audit.log.
+                                                # Trailing slash intentionally left off for better readability in the state.
 
       # syslog options
-      #facility: AUTH
-      #tag: vault
+      syslog:
+        facility: AUTH
+        tag: vault
       
       # socket options
-      address: 10.10.10.10:9090
-      socket_type: tcp
+      socket:
+        address: 10.10.10.10:9090
+        socket_type: tcp
 
   seal:
     type: awskms
@@ -48,6 +53,8 @@ config:
 
 initialize:
   auto_unseal:
-    enabled: True             # If this is enabled, the recovery_shares and recovery_threshold will be overidden with 1's.
+    enabled: True             # If this is enabled, the shares and thresholds will all be overidden with 1's.
+  key_shares: 5
+  key_threshold: 5
   recovery_shares: 5
   recovery_threshold: 5
