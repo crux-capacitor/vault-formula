@@ -4,13 +4,15 @@ listener "tcp" {
 }
 
 seal "{{ config.seal.type }}" {
-{% for option, value in config.seal.options.items() %}
+{%- for option, value in config.seal.options.items() %}
   {{ option }} = "{{ value }}"
+{%- endfor %}
 }
 
 storage "{{ config.storage.type }}" {
-{% for option, value in config.storage.options.items() %}
+{%- for option, value in config.storage.options.items() %}
   {{ option }} = "{{ value }}"
+{%- endfor %}
 }
 
 ui = {{ config.ui }}
