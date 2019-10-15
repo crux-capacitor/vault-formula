@@ -1,3 +1,5 @@
+{% import_yaml slspath~'/config.yaml' as vault %}
+
 include:
   - formula.vault.install
   - formula.vault.config
@@ -5,6 +7,11 @@ include:
 "Manage Vault Service File":
   file.managed:
     - name: /etc/systemd/system/vault.service
+    - template: jinja
+    - context:
+        log_level: {{ vault.config.log_level }}
+        user: {{ vault.user }}
+        group: {{ vault.group }}
     - require:
       - sls: formula.vault.install
 

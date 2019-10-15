@@ -6,7 +6,7 @@ include:
 
 "Manage Vault Config File":
   file.managed:
-    - name: /etc/vault.d/vault.hcl
+    - name: {{ vault.user.home_dir }}/vault.hcl
     - source: salt://{{ slspath }}/files/vault.hcl
     - makedirs: True
     - user: vault

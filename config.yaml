@@ -1,11 +1,20 @@
+user:
+  name: vault
+  home_dir: /etc/vault.d      # Trailing slash intentionally left off for better readability in the states.
+
+group:
+  name: vault
+
 install:
-  version: 1.2.3
+  version: 1.2.3              # This gets concatenated into: vault_<version>_linux_amd64.zip
 
 config:
-  ui: 'true'    # Enable the web UI: 'true' or 'false'. This needs to be a string, not a bool.
+  ui: 'true'                  # Enable the web UI: 'true' or 'false'. This needs to be a string, not a bool.
   log_level: info
   
   seal:
+    enabled: True             # Configuring this at all is optional. If set to False, Vault will deploy with the default 
+                              # cryptographic seal and the seal stanza will not be in the vault config file.
     type: awskms
     options:
 
@@ -27,7 +36,7 @@ config:
         region: us-east-1
         table: vault
 
-      # consul options
+      # consul options. Generally recommended / required that the Vault servers are also Consul agents.
       consul:
         address: 127.0.0.1:8500
         path: vault

@@ -3,11 +3,13 @@ listener "tcp" {
   cluster_address = "{{ grains['private_ip'] }}:8201
 }
 
+{%- if config.seal.enabled %}
 seal "{{ config.seal.type }}" {
 {%- for option, value in config.seal.options.items() %}
   {{ option }} = "{{ value }}"
 {%- endfor %}
 }
+{%- endif %}
 
 storage "{{ config.storage.type }}" {
 {%- for option, value in config.storage.options.items() %}
