@@ -16,6 +16,7 @@
 
 include:
   - formula.vault.install
+  - formula.vault.service
 
 "Initialize Vault":
   file.directory:
@@ -24,8 +25,9 @@ include:
     - name: vault operator init -key-shares={{ key_shares }} -key-threshold={{ key_thold }} -recovery-shares={{ rec_shares }} -recovery-threshold={{ rec_thold }} | tee -a /root/vault/initialize.txt
     - env:
       - VAULT_ADDR: http://localhost:8200
-    - creates: /root/vault/initialize.txt
+    #- creates: /root/vault/initialize.txt
     - unless: vault status | grep Initialized | grep true
     - require:
       - file: "Initialize Vault"
       - sls: formula.vault.install
+      - sls: formula.vault.service
