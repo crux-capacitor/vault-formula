@@ -4,7 +4,7 @@
 include:
   - formula.vault.install
 
-"Manage Vault Config File":
+"Manage Vault Config":
   file.managed:
     - name: {{ vault.user.home_dir }}/vault.hcl
     - source: salt://{{ slspath }}/files/vault.hcl
@@ -14,6 +14,6 @@ include:
     - dir_mode: 755
     - template: jinja
     - context:
-        config: {{ vault.config }}
+        config: {{ vault.config|json }}
     - require:
       - sls: formula.vault.install
