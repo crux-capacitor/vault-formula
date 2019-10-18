@@ -12,8 +12,13 @@ config:
   ui: 'true'                  # Enable the web UI: 'true' or 'false'. This needs to be a string, not a bool.
   log_level: info
   
+  listener:
+    type: tcp
+    options:
+      tls_disable: True
+      
   seal:
-    enabled: True             # Configuring this at all is optional. If set to False, Vault will deploy with the default 
+    enabled: False             # Configuring this at all is optional. If set to False, Vault will deploy with the default 
                               # cryptographic seal and the seal stanza will not be in the vault config file.
     type: awskms
     options:
@@ -27,7 +32,7 @@ config:
         endpoint: https://vpce-0e1bb1852241f8cc6-pzi0do8n.kms.us-east-1.vpce.amazonaws.com
 
   storage:
-    type: dynamodb
+    type: file
     options:
       
       # dynamodb options
@@ -40,6 +45,10 @@ config:
       consul:
         address: 127.0.0.1:8500
         path: vault
+
+      # local filesystem options. Not HA.
+      file:
+        path: "/etc/vault.d/data"
 
 auditing:
   enabled: True
