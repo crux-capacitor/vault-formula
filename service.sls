@@ -7,6 +7,7 @@ include:
 "Manage Vault Service File":
   file.managed:
     - name: /etc/systemd/system/vault.service
+    - source: salt://{{ slspath }}/files/vault.service
     - template: jinja
     - context:
         log_level: {{ vault.config.log_level }}
