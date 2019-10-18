@@ -10,6 +10,8 @@ include:
     - source: 
         - https://releases.hashicorp.com/vault/{{ version }}/vault_{{ version }}_linux_amd64.zip
         - salt://{{ slspath }}/installers/vault_{{ version }}_linux_amd64.zip
+    - user: {{ vault.user.name }}
+    - group: {{ vault.group.name }}
     - enforce_toplevel: False
     - keep_source: False
     - skip_verify: True
@@ -17,11 +19,14 @@ include:
     - require:
       - sls: formula.vault.user
 
-"Symlink Vault":
-  file.symlink:
+"Copy Vault":
+  file.copy:
     - name: /usr/local/bin/vault
-    - target: /root/vault_{{ version }}/vault
-    - onchanges:
+    - source: /root/vault_{{ version }}/vault
+    - user: {{ vault.user.name }}
+    - group: {{ vault.group.name }}
+    - mode: 0775
+    - require:
       - archive: "Extract Vault Archive"
     - require:
         - sls: formula.vault.user
