@@ -13,15 +13,21 @@ include:
 {%   endfor %}
 
 {%   if type == "file" %}
+{%     set audit_dir = vault.auditing.options[type].file_path.split('/')[:-1]|join('/') %}
 
 # If file auditing was selected, first manage the audit directory with proper ownership and permissions.
 "Manage Vault Audit Directory":
   file.directory:
-    - name: {{ vault.auditing.options[type].audit_directory }}
+    - name: {{ audit_dir }}
     - user: vault
     - group: vault
     - dir_mode: 755
-    - file_mode: 600
+    - file_mode: 644
+    - makedirs: True
+    - recurse:
+      - user
+      - group
+      - mode
     - require_in:
       - cmd: "Enable Vault Auditing"
     - require:
@@ -35,6 +41,7 @@ include:
     - env:
       - VAULT_ADDR: http://localhost:8200
     - unless: vault audit list | grep {{ type }}
+    - onlyif: vault status | grep Sealed | grep false
     - require:
       - sls: formula.vault.install
       - sls: formula.vault.service

@@ -16,7 +16,7 @@ config:
     type: tcp
     options:
       tls_disable: True
-      
+
   seal:
     enabled: False             # Configuring this at all is optional. If set to False, Vault will deploy with the default 
                               # cryptographic seal and the seal stanza will not be in the vault config file.
@@ -48,7 +48,7 @@ config:
 
       # local filesystem options. Not HA.
       file:
-        path: "/etc/vault.d/data"
+        path: "/tmp/vault/data"
 
 auditing:
   enabled: True
@@ -59,8 +59,7 @@ auditing:
 
     # file auditing options
     file:
-      audit_directory: /var/log/vault         # This directory will be created, and the audit file will be called audit.log.
-                                              # Trailing slash intentionally left off for better readability in the state.
+      file_path: /var/log/vault/audit/audit.log         # This directory will be created.
 
     # syslog options
     syslog:
